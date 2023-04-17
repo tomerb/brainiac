@@ -7,9 +7,11 @@
 CC = g++
 OUT_FILE_NAME = brainiac$(shell python3-config --extension-suffix)
 
-CFLAGS= -Wall -Werror -Wextra -fPIC
+CFLAGS = -Wall -Werror -Wextra -fPIC
 
-INC = -I../libs/pybind11/include -I/usr/include/python3.11
+LDFLAGS = -L../brain/lib -lbrainiac
+
+INC = -I../libs/pybind11/include -I/usr/include/python3.11 -I../brain/src
 
 OBJ_DIR=.
 
@@ -25,7 +27,7 @@ OUT_DIR=.
 
 # Enumerating of every *.cpp as *.o and using that as dependency
 $(OUT_FILE_NAME): $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(wildcard *.cpp))
-	$(CC) $^ -shared -Wl,-soname,$(OUT_FILE_NAME) -o $@
+	$(CC) $^ -shared -Wl,-soname,$(OUT_FILE_NAME) $(LDFLAGS) -o $@
 
 #Compiling every *.cpp to *.o
 $(OBJ_DIR)/%.o: %.cpp dirmake

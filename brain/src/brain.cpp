@@ -19,12 +19,18 @@ Brain& Brain::Instance()
     return instance;
 }
 
-bool Brain::Start()
+bool Brain::Start(const string &config_file)
 {
     if (Utils::SafeFlagCheckAndUpdate(running_mutex,
                                       m_running,
                                       "Brain thread already running; ignoring start request."))
     {
+        return false;
+    }
+
+    if (!Utils::ParseConfigFile(config_file))
+    {
+        Stop();
         return false;
     }
 

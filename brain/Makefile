@@ -7,7 +7,7 @@
 CC = g++
 OUT_FILE_NAME = libbrainiac.a
 
-CFLAGS= -O0 -g -Wall -Werror -Wextra -c
+CFLAGS= -O0 -g -Wall -Werror -Wextra -c -fPIC
 
 SRC_DIR = ./src
 INC = -I$(SRC_DIR)

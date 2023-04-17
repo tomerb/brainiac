@@ -1,11 +1,18 @@
 #include <pybind11/pybind11.h>
 
-static int add(int i, int j) {
-    return i + j;
-}
+#include "brain.h"
+
+namespace py = pybind11;
 
 PYBIND11_MODULE(brainiac, m) {
-    m.doc() = "pybind11 example plugin"; // optional module docstring
+    /*py::class_<brainiac::Brain>(m, "brain")
+        .def_static("instance", &brainiac::Brain::Instance)
+        .def("start", &brainiac::Brain::Start);*/
 
-    m.def("add", &add, "A function that adds two numbers");
+    /*    py::class_<brainiac::Brain>(m, "brain")
+        .def_static("instance", [](py::object) { return brainiac::Brain::Instance(); )},
+        py::return_value_policy::reference_internal);*/
+
+    py::class_<brainiac::Brain, std::unique_ptr<brainiac::Brain, py::nodelete>>(m, "brain")
+        .def(py::init([](){ return std::unique_ptr<brainiac::Brain, py::nodelete>(&brainiac::Brain::Instance()); }))        .def("start", &brainiac::Brain::Start);
 }

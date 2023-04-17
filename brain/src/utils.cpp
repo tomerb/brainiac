@@ -40,4 +40,10 @@ bool Utils::SafeFlagCheck(mutex &mtx,
     return UnsafeFlagCheck(flag, err);
 }
 
+bool Utils::ParseConfigFile(const string &config_file)
+{
+    cout << config_file << endl;
+    return false;
+}
+
 }

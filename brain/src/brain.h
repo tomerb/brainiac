@@ -11,7 +11,7 @@ class Brain
     Brain(const Brain&) = delete;
     Brain& operator=(const Brain&) = delete;
 
-    bool Start();
+    bool Start(const std::string &config_file);
     void Stop();
 
     static Brain& Instance();

@@ -16,6 +16,7 @@ class Utils
     static bool SafeFlagCheck(std::mutex &mtx,
                               bool condition,
                               const std::optional<std::string> &err = std::nullopt);
+    static bool ParseConfigFile(const std::string &config_file);
  private:
     Utils() = default;
 };

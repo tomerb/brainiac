@@ -1,3 +1,7 @@
 import brainiac
+import sys
 
-print(brainiac.add(1, 2))
+if len(sys.argv) != 2:
+    sys.exit("Missing configuration file or too many arguments")
+
+brainiac.brain.instance().start(sys.argv[1])
