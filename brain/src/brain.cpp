@@ -5,10 +5,9 @@
 #include "utils.h"
 #include "motors_manager.h"
 #include "position_manager.h"
+#include "global_defs.h"
 
 using namespace std;
-
-static mutex running_mutex;
 
 namespace brainiac
 {
@@ -21,7 +20,7 @@ Brain& Brain::Instance()
 
 bool Brain::Start(const string &config_file)
 {
-    if (Utils::SafeFlagCheckAndUpdate(running_mutex,
+    if (Utils::SafeFlagCheckAndUpdate(m_running_mutex,
                                       m_running,
                                       "Brain thread already running; ignoring start request."))
     {
@@ -34,7 +33,7 @@ bool Brain::Start(const string &config_file)
         return false;
     }
 
-    if (!MotorsManager::Instance().Start() ||
+    if (!MotorsManager::Instance().Start(3) ||
         !PositionManager::Instance().Start())
     {
         Stop();
@@ -49,12 +48,18 @@ void Brain::MainLoop()
 {
     while (true)
     {
-        if (!Utils::SafeFlagCheck(running_mutex,
+        if (!Utils::SafeFlagCheck(m_running_mutex,
                                   m_running,
                                   "Stopping brain thread per request."))
         {
             break;
         }
+
+        vector<Position> motors_positions;
+        MotorsManager::Instance().GetPositions(motors_positions);
+
+        Position position;
+        PositionManager::Instance().GetPosition(position);
 
         // 1. Get motors + position
         // 2. Call net functions
@@ -68,8 +73,9 @@ void Brain::Stop()
     MotorsManager::Instance().Stop();
     PositionManager::Instance().Stop();
 
-    lock_guard<mutex> guard(running_mutex);
+    lock_guard<mutex> guard(m_running_mutex);
     m_running = false;
+    //guard.unlock();
 
     m_thread.join();
 }

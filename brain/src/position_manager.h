@@ -1,5 +1,7 @@
 #pragma once
 
+#include "global_defs.h"
+
 namespace brainiac
 {
 
@@ -12,10 +14,14 @@ class PositionManager
     bool Start();
     void Stop();
 
+    void GetPosition(Position &position) const;
+
     static PositionManager& Instance();
  private:
     PositionManager() = default;
     ~PositionManager() = default;
+
+    Position m_position;
 };
 
 }

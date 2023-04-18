@@ -1,5 +1,7 @@
 #include "position_manager.h"
 
+using namespace std;
+
 namespace brainiac
 {
 
@@ -16,6 +18,11 @@ bool PositionManager::Start()
 
 void PositionManager::Stop()
 {
+}
+
+void PositionManager::GetPosition(Position &position) const
+{
+    position = m_position;
 }
 
 }
