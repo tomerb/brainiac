@@ -4,9 +4,9 @@
     | \_\ \  | \// __ \|  |   |  \  |/ __ \\  \___ 
     |___  /__|  (____  /__|___|  /__(____  /\___  >
          \/           \/        \/        \/     \/ 
-A tiny brain. Might be used by a robot. ¯\_(ツ)_/¯
+A tiny brain. Might be used by a robot. ¯\\_(ツ)_/¯
 
-** Prerequisite
+**Prerequisite**
 - gcc-c++
 - make
 - CMake
