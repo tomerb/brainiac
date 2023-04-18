@@ -17,7 +17,7 @@ class Brain
 
     static Brain& Instance();
  private:
-    Brain() = default;
+     Brain() : m_running(false) {}
     ~Brain() = default;
 
     void MainLoop();

@@ -26,9 +26,9 @@ bool MotorsManager::Start(int number_of_motors)
         return false;
     }
 
-    if (Utils::SafeFlagCheckAndUpdate(m_running_mutex,
-                                      m_running,
-                                      "Brain thread already running; ignoring start request."))
+    if (!Utils::SafeFlagCheckAndUpdate(m_running_mutex,
+                                       m_running,
+                                       "Brain thread already running; ignoring start request."))
     {
         return false;
     }

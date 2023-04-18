@@ -28,7 +28,7 @@ bool Utils::SafeFlagCheckAndUpdate(mutex &mtx,
                                    const optional<string> &err)
 {
     const lock_guard<mutex> guard(mtx);
-    flag = UnsafeFlagCheck(flag, err);
+    flag = UnsafeFlagCheck(flag == false, err);
     return flag;
 }
 
@@ -37,13 +37,14 @@ bool Utils::SafeFlagCheck(mutex &mtx,
                           const optional<string> &err)
 {
     const lock_guard<mutex> guard(mtx);
+    cout << "test";
     return UnsafeFlagCheck(flag, err);
 }
 
 bool Utils::ParseConfigFile(const string &config_file)
 {
     cout << config_file << endl;
-    return false;
+    return true;
 }
 
 }
