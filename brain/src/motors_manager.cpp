@@ -11,7 +11,7 @@ namespace brainiac
 
 const int MotorsManager::MAX_NUMBER_OF_MOTORS = 10;
 
-static const int MAIN_LOOP_DELAY_MS = 10*1000; // 100Hz
+static const int MAIN_LOOP_DELAY_USEC = 10*1000; // 100Hz
 
 MotorsManager& MotorsManager::Instance()
 {
@@ -72,7 +72,7 @@ void MotorsManager::MainLoop()
             m_motors_positions[2] = Position{3,3};
         }
 
-        usleep(MAIN_LOOP_DELAY_MS);
+        usleep(MAIN_LOOP_DELAY_USEC);
     }
 }
 

@@ -9,7 +9,7 @@ using namespace std;
 namespace brainiac
 {
 
-static const int MAIN_LOOP_DELAY_MS = 4*1000; // 250Hz
+static const int MAIN_LOOP_DELAY_USEC = 4*1000; // 250Hz
 
 PositionManager& PositionManager::Instance()
 {
@@ -63,7 +63,7 @@ void PositionManager::MainLoop()
             m_position = Position{1,1};
         }
 
-        usleep(MAIN_LOOP_DELAY_MS);
+        usleep(MAIN_LOOP_DELAY_USEC);
     }
 }
 

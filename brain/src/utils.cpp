@@ -1,6 +1,8 @@
 #include "utils.h"
 
 #include <iostream>
+#include "yaml-cpp/yaml.h"
+#include "global_defs.h"
 
 using namespace std;
 
@@ -41,9 +43,14 @@ bool Utils::SafeFlagCheck(mutex &mtx,
     return UnsafeFlagCheck(flag, err);
 }
 
-bool Utils::ParseConfigFile(const string &config_file)
+bool Utils::ParseConfigFile(const string &config_file, BrainConfig &brain_config)
 {
-    cout << config_file << endl;
+    YAML::Node config = YAML::LoadFile(config_file);
+    if (config[brain_config.number_of_motors.name])
+    {
+        cout << "num: " << config[brain_config.number_of_motors.name] << endl;
+        brain_config.number_of_motors.value = config[brain_config.number_of_motors.name].as<int>();
+    }
     return true;
 }
 

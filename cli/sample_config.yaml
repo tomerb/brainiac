@@ -1,0 +1,7 @@
+{
+  "number_of_motors": 3,
+  "net_funcs": [
+    "MovementController",
+    "ObstacleFinder"
+  ]
+}

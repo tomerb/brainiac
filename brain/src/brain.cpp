@@ -1,16 +1,18 @@
 #include "brain.h"
 
 #include <iostream>
+#include <unistd.h>
 
 #include "utils.h"
 #include "motors_manager.h"
 #include "position_manager.h"
-#include "global_defs.h"
 
 using namespace std;
 
 namespace brainiac
 {
+
+static const int MAIN_LOOP_DELAY_USEC = 100*1000; // 10Hz
 
 Brain& Brain::Instance()
 {
@@ -26,14 +28,12 @@ bool Brain::Start(const string &config_file)
     {
         return false;
     }
-    cout << "breaking3\n";
 
-    if (!Utils::ParseConfigFile(config_file))
+    if (!Utils::ParseConfigFile(config_file, m_config))
     {
         Stop();
         return false;
     }
-        cout << "breaking2\n";
 
     if (!MotorsManager::Instance().Start(3) ||
         !PositionManager::Instance().Start())
@@ -41,50 +41,45 @@ bool Brain::Start(const string &config_file)
         Stop();
         return false;
     }
-        cout << "breaking4\n";
 
     m_thread = thread(&Brain::MainLoop, this);
 
     return true;
 }
 
-static void DumpStatus(const vector<Position> &motors_positions,
-                       const Position &position)
+static void DumpStatus(const PositionsData &positions_data)
 {
     cout << "[Motors positions] - ";
-    for (auto &pos : motors_positions) {
+    for (auto &pos : positions_data.motors) {
         cout << "(" << pos.x << "," << pos.y << "), ";
     }
 
-    cout << endl << "[Position] - " << position.x << "," << position.y << endl;
+    cout << endl << "[Position] - " << positions_data.pos.x << "," << positions_data.pos.y << endl;
 }
 
 void Brain::MainLoop()
 {
-        cout << "breaking5\n";
     while (true)
     {
         if (!Utils::SafeFlagCheck(m_running_mutex,
                                   m_running,
                                   "Stopping brain thread per request."))
         {
-        cout << "breaking6\n";
             break;
         }
-        cout << "breaking7\n";
 
-        vector<Position> motors_positions;
-        MotorsManager::Instance().GetPositions(motors_positions);
+        PositionsData positions_data;
 
-        Position position;
-        PositionManager::Instance().GetPosition(position);
+        MotorsManager::Instance().GetPositions(positions_data.motors);
 
-        DumpStatus(motors_positions, position);
+        PositionManager::Instance().GetPosition(positions_data.pos);
 
-        // 1. Get motors + position
-        // 2. Call net functions
-        // 3. Handle camera
-        // 4. sleep(100)
+        // call net functions
+        // handle camera
+
+        DumpStatus(positions_data);
+
+        usleep(MAIN_LOOP_DELAY_USEC);
     }
 }
 

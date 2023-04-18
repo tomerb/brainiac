@@ -3,6 +3,8 @@
 #include <thread>
 #include <mutex>
 
+#include "global_defs.h"
+
 namespace brainiac
 {
 
@@ -25,6 +27,7 @@ class Brain
     bool m_running;
     std::thread m_thread;
     std::mutex m_running_mutex;
+    BrainConfig m_config;
 };
 
 }

@@ -8,5 +8,4 @@ if len(sys.argv) != 2:
 brain_instance = brainiac.brain.instance()
 brain_instance.start(sys.argv[1])
 
-
 time.sleep(100)

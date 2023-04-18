@@ -7,10 +7,12 @@
 CC = g++
 OUT_FILE_NAME = libbrainiac.a
 
-CFLAGS= -O0 -g -Wall -Werror -Wextra -c -fPIC
+CFLAGS = -O0 -g -Wall -Werror -Wextra -c -fPIC
+
+YAML_CPP_DIR = ../libs/yaml-cpp
 
 SRC_DIR = ./src
-INC = -I$(SRC_DIR)
+INC = -I$(SRC_DIR) -I$(YAML_CPP_DIR)/include
 
 OBJ_DIR=./obj
 
@@ -29,14 +31,18 @@ $(OUT_FILE_NAME): $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DI
 	ar -r -o $(OUT_DIR)/$@ $^
 
 #Compiling every *.cpp to *.o
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp dirmake
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp dirmake yaml-cpp
 	$(CC) -c $(INC) $(CFLAGS) -o $@  $<
 
 dirmake:
 	@mkdir -p $(OUT_DIR)
 	@mkdir -p $(OBJ_DIR)
 
+yaml-cpp:
+	@mkdir -p $(YAML_CPP_DIR)/build
+	@cd $(YAML_CPP_DIR)/build && cmake .. && make -j4
+
 clean:
-	rm -f $(OBJ_DIR)/*.o $(OUT_DIR)/$(OUT_FILE_NAME) Makefile.bak
+	rm -f $(OBJ_DIR)/*.o $(OUT_DIR)/$(OUT_FILE_NAME) Makefile.bak $(YAML_CPP_DIR)/build
 
 rebuild: clean build
