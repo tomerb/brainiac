@@ -4,4 +4,5 @@ import sys
 if len(sys.argv) != 2:
     sys.exit("Missing configuration file or too many arguments")
 
-brainiac.brain.instance().start(sys.argv[1])
+brain_instance = brainiac.brain.instance()
+brain_instance.start(sys.argv[1])
