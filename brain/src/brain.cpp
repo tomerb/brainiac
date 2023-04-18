@@ -41,6 +41,7 @@ bool Brain::Start(const string &config_file)
     }
 
     m_thread = thread(&Brain::MainLoop, this);
+
     return true;
 }
 
@@ -73,9 +74,10 @@ void Brain::Stop()
     MotorsManager::Instance().Stop();
     PositionManager::Instance().Stop();
 
-    lock_guard<mutex> guard(m_running_mutex);
-    m_running = false;
-    //guard.unlock();
+    {
+        const lock_guard<mutex> guard(m_running_mutex);
+        m_running = false;
+    }
 
     m_thread.join();
 }

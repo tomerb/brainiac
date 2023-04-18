@@ -1,5 +1,8 @@
 #pragma once
 
+#include <thread>
+#include <mutex>
+
 #include "global_defs.h"
 
 namespace brainiac
@@ -14,7 +17,9 @@ class PositionManager
     bool Start();
     void Stop();
 
-    void GetPosition(Position &position) const;
+    void GetPosition(Position &position);
+
+    void MainLoop();
 
     static PositionManager& Instance();
  private:
@@ -22,6 +27,9 @@ class PositionManager
     ~PositionManager() = default;
 
     Position m_position;
+    bool m_running;
+    std::thread m_thread;
+    std::mutex m_running_mutex;
 };
 
 }
