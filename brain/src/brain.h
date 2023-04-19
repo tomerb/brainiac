@@ -6,11 +6,10 @@
 #include <memory>
 
 #include "global_defs.h"
+#include "net_func.h"
 
 namespace brainiac
 {
-
-class NetFunc;
 
 class Brain
 {
