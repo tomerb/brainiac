@@ -1,6 +1,7 @@
 #include "position_manager.h"
 
 #include <unistd.h>
+#include <cstdlib>
 
 #include "utils.h"
 
@@ -60,7 +61,8 @@ void PositionManager::MainLoop()
 
         {
             const lock_guard<mutex> guard(m_running_mutex);
-            m_position = Position{1,1};
+            m_position.x *= 1 + (0.001 * (rand() % 100));
+            m_position.y *= 1 + (0.001 * (rand() % 100));
         }
 
         usleep(MAIN_LOOP_DELAY_USEC);
