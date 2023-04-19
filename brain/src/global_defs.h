@@ -8,8 +8,8 @@ namespace brainiac
 
 struct Position
 {
-    int x;
-    int y;
+    double x;
+    double y;
 };
 
 typedef std::vector<Position> MotorsPosition;

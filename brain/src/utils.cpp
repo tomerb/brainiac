@@ -39,7 +39,6 @@ bool Utils::SafeFlagCheck(mutex &mtx,
                           const optional<string> &err)
 {
     const lock_guard<mutex> guard(mtx);
-    cout << "test";
     return UnsafeFlagCheck(flag, err);
 }
 

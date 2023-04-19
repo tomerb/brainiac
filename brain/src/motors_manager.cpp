@@ -33,6 +33,8 @@ bool MotorsManager::Start(int number_of_motors)
         return false;
     }
 
+    m_motors_positions.resize(number_of_motors);
+
     m_thread = thread(&MotorsManager::MainLoop, this);
 
     return true;
@@ -67,9 +69,11 @@ void MotorsManager::MainLoop()
 
         {
             const lock_guard<mutex> guard(m_running_mutex);
-            m_motors_positions[0] = Position{1,1};
-            m_motors_positions[1] = Position{2,2};
-            m_motors_positions[2] = Position{3,3};
+            for (auto &pos : m_motors_positions)
+            {
+                pos.x *= 1.1;
+                pos.y *= 1.1;
+            }
         }
 
         usleep(MAIN_LOOP_DELAY_USEC);

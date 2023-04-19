@@ -30,7 +30,6 @@ class MotorsManager
     void MainLoop();
 
     std::vector<Position> m_motors_positions;
-    int m_number_of_motors;
     bool m_running;
     std::thread m_thread;
     std::mutex m_running_mutex;
