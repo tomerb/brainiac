@@ -10,7 +10,7 @@ class NetFunc
  public:
     virtual ~NetFunc() {}
     virtual bool Exec(const PositionsData &positions_data,
-                      MotorsPosition motors_positions) const = 0;
+                      MotorsPosition &motors_positions) const = 0;
 };
 
 }

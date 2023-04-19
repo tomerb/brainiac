@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "motors_manager.h"
 #include "position_manager.h"
+#include "net_func_factory.h"
 
 using namespace std;
 
@@ -18,6 +19,16 @@ Brain& Brain::Instance()
 {
     static Brain instance;
     return instance;
+}
+
+void Brain::InitNetFuncs()
+{
+    m_net_funcs.clear();
+
+    for (auto func : m_config.net_funcs.value)
+    {
+        m_net_funcs[func] = NetFuncFactory::Create(func);
+    }
 }
 
 bool Brain::Start(const string &config_file)
@@ -35,12 +46,14 @@ bool Brain::Start(const string &config_file)
         return false;
     }
 
-    if (!MotorsManager::Instance().Start(3) ||
+    if (!MotorsManager::Instance().Start(m_config.number_of_motors.value) ||
         !PositionManager::Instance().Start())
     {
         Stop();
         return false;
     }
+
+    InitNetFuncs();
 
     m_thread = thread(&Brain::MainLoop, this);
 

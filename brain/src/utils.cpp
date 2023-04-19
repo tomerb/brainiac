@@ -46,11 +46,19 @@ bool Utils::SafeFlagCheck(mutex &mtx,
 bool Utils::ParseConfigFile(const string &config_file, BrainConfig &brain_config)
 {
     YAML::Node config = YAML::LoadFile(config_file);
+
     if (config[brain_config.number_of_motors.name])
     {
-        cout << "num: " << config[brain_config.number_of_motors.name] << endl;
-        brain_config.number_of_motors.value = config[brain_config.number_of_motors.name].as<int>();
+        brain_config.number_of_motors.value =
+            config[brain_config.number_of_motors.name].as<int>();
     }
+
+    if (config[brain_config.net_funcs.name])
+    {
+        brain_config.net_funcs.value =
+            config[brain_config.net_funcs.name].as<vector<string>>();
+    }
+
     return true;
 }
 

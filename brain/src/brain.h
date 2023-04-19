@@ -2,11 +2,15 @@
 
 #include <thread>
 #include <mutex>
+#include <map>
+#include <memory>
 
 #include "global_defs.h"
 
 namespace brainiac
 {
+
+class NetFunc;
 
 class Brain
 {
@@ -23,11 +27,13 @@ class Brain
     ~Brain() = default;
 
     void MainLoop();
+    void InitNetFuncs();
 
     bool m_running;
     std::thread m_thread;
     std::mutex m_running_mutex;
     BrainConfig m_config;
+    std::map<std::string, std::unique_ptr<NetFunc>> m_net_funcs;
 };
 
 }

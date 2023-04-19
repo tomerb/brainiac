@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <string>
 
 namespace brainiac
@@ -21,8 +20,6 @@ struct PositionsData
     Position pos;
 };
 
-class NetFunc;
-
 struct BrainConfig
 {
     template<typename T> struct Pair
@@ -32,7 +29,7 @@ struct BrainConfig
     };
 
     Pair<int> number_of_motors;
-    Pair< std::map<std::string, NetFunc*> > net_funcs;
+    Pair< std::vector<std::string> > net_funcs;
 
     BrainConfig()
     {
