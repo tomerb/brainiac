@@ -60,14 +60,22 @@ bool Brain::Start(const string &config_file)
     return true;
 }
 
-static void DumpStatus(const PositionsData &positions_data)
+static void DumpStatus(const PositionsData &positions_data,
+                       const MotorsPosition &new_motors_positions)
 {
     cout << "[Motors positions] - ";
-    for (auto &pos : positions_data.motors) {
+    for (auto &pos : positions_data.motors)
+    {
         cout << "(" << pos.x << "," << pos.y << "), ";
     }
 
-    cout << endl << "[Position] - " << positions_data.pos.x << "," << positions_data.pos.y << endl;
+    cout << endl << "[Position] - " << positions_data.pos.x << "," << positions_data.pos.y;
+
+    cout << endl << "[Net actions] - ";
+    for (auto &pos : new_motors_positions)
+    {
+        cout << "(" << pos.x << "," << pos.y << "), " << endl;
+    }
 }
 
 void Brain::MainLoop()
@@ -87,10 +95,15 @@ void Brain::MainLoop()
 
         PositionManager::Instance().GetPosition(positions_data.pos);
 
-        // call net functions
-        // handle camera
+        MotorsPosition new_motors_positions;
+        for (auto &func : m_net_funcs)
+        {
+            func.second->Exec(positions_data, new_motors_positions);
+        }
 
-        DumpStatus(positions_data);
+        // TODO: handle camera data
+
+        DumpStatus(positions_data, new_motors_positions);
 
         usleep(MAIN_LOOP_DELAY_USEC);
     }
